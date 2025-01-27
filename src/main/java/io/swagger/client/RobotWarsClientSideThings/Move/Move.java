@@ -6,11 +6,20 @@ import io.swagger.client.model.MovementType;
 import java.math.BigDecimal;
 
 public class Move {
+    private String moveId;
     private MovementType moveType;
     private String RobotID;
     private alignment alignment;
     private BigDecimal mapIndex;
 
+
+    public String getMoveId() {
+        return moveId;
+    }
+
+    public void setMoveId(String moveId) {
+        this.moveId = moveId;
+    }
 
     public MovementType getMoveType() {
         return moveType;

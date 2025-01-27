@@ -37,7 +37,11 @@ public class GameController {
             mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
         }
         if (mainRobot.getMovesLeft() == 0 && newMove.getMovementType() != MovementType.END) {
-            api.apiGamesGameIdMovePlayerPlayerIdPost(makeEndMove(newMove, mainUser), gameId, mainUser.getUserId());
+            try {
+                api.apiGamesGameIdMovePlayerPlayerIdPost(makeEndMove(newMove, mainUser), gameId, mainUser.getUserId());
+            } catch (ApiException e) {
+                System.out.println(e.getResponseBody());
+            }
 
         }
     }
@@ -86,12 +90,22 @@ public class GameController {
         System.out.println("Alignment: " + apiNewMove.getAlign());
         System.out.println("Map Index: " + apiNewMove.getMapIndex());
 
-        io.swagger.client.model.Move postedMove = api.apiGamesGameIdMovePlayerPlayerIdPost(apiNewMove, gameId, user.getUserId());
 
         checkPowerUp(turningRobot, powerUps);
+
         MapView.drawMap(map);
         System.out.println();
-        return postedMove;
+
+
+        try {
+            io.swagger.client.model.Move postedMove = api.apiGamesGameIdMovePlayerPlayerIdPost(apiNewMove, gameId, user.getUserId());
+            return postedMove;
+        } catch (ApiException e) {
+            System.out.println(e.getResponseBody());
+        }
+
+        return null;
+
 
     }
 
@@ -105,16 +119,18 @@ public class GameController {
         while (mainRobot.getMovesLeft() > 0 && !GameValidationController.checkWin(robots)) {
             try {
                 movesList = api.apiGamesGameIdMoveMoveIdAfterGet(gameId, lastMoveId);
-                if (!(movesList.isEmpty())) {
+                if ((movesList.size()) > 1) {
                     List<Move> unpackedMoves = unpackMoves(movesList, users);
                     for (Move move : unpackedMoves) {
-                        executeMove(move, mainRobot, robots, walls, map);
-                        checkPowerUp(mainRobot, powerUps);
-                        mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
-                        MapView.drawMap(map);
-                        System.out.println();
-                        System.out.println("Postition: " + mainRobot.getX() + " / " + mainRobot.getY());
-                        lastMoveId = movesList.getLast().getId();
+                        if(!move.getMoveId().equals(lastMoveId)){
+                            executeMove(move, mainRobot, robots, walls, map);
+                            checkPowerUp(mainRobot, powerUps);
+                            mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
+                            MapView.drawMap(map);
+                            System.out.println();
+                            System.out.println("Postition: " + mainRobot.getX() + " / " + mainRobot.getY());
+                            lastMoveId = movesList.getLast().getId();
+                        }
                     }
                     movesList.clear();
                 }
@@ -133,8 +149,9 @@ public class GameController {
 
         for (io.swagger.client.model.Move move : movesList) {
             Move unpackedMove = new Move();
+            unpackedMove.setMoveId(move.getId());
             unpackedMove.setMoveType(move.getMovementType());
-            unpackedMove.setRobotID(getRobotIdFromPlayer(users ,move.getPlayerId()));
+            unpackedMove.setRobotID(getRobotIdFromPlayer(users, move.getPlayerId()));
             unpackedMove.setAlignment(invertAlign(move.getAlign()));
             unpackedMove.setMapIndex(move.getMapIndex());
             unpackedMoves.add(unpackedMove);
@@ -143,9 +160,9 @@ public class GameController {
     }
 
 
-    public static String getRobotIdFromPlayer(User[] users, String userId){
-        for( User user : users){
-            if(user.getUserId().equals(userId)){
+    public static String getRobotIdFromPlayer(User[] users, String userId) {
+        for (User user : users) {
+            if (user.getUserId().equals(userId)) {
                 return user.getRobotId();
             }
         }
@@ -160,9 +177,9 @@ public class GameController {
 
     }
 
-    public static Robot getIngameRobotById(Robot[] robots, String id){
-        for(Robot robot : robots) {
-            if (id.equals(robot.getRobotId())){
+    public static Robot getIngameRobotById(Robot[] robots, String id) {
+        for (Robot robot : robots) {
+            if (id.equals(robot.getRobotId())) {
                 return robot;
             }
         }
@@ -209,7 +226,7 @@ public class GameController {
 
     }
 
-    public static void executeMove(Move move,  Robot turningRobot, Robot[] robots, Walls[] walls, Map map) {
+    public static void executeMove(Move move, Robot turningRobot, Robot[] robots, Walls[] walls, Map map) {
         switch (move.getMoveType()) {
             case MOVE:
                 map.setSpaceYX(turningRobot.getX(), turningRobot.getY(), ' ');

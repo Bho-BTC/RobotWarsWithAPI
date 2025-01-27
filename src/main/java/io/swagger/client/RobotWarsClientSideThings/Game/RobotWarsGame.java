@@ -119,14 +119,13 @@ public class RobotWarsGame {
 
         //Während niemand das Spiel gewonnen hat
 
-
         while (!GameValidationController.checkWin(robots)) {
             MapView.drawMap(map);
-            if (users[(TurnCount % robots.length)].getName() == "You"){
+            if (users[(TurnCount % robots.length)].getName().equals("You")){
                 GameController.takeTurn(game.getId(), map, users[(TurnCount % robots.length)], robots[TurnCount % robots.length], robots, powerUps, walls, api);
 
             }else{
-
+                GameController.waitEnemyTurn(game.getId(), map, users, robots[TurnCount % robots.length], robots, powerUps, walls, api, getLastMoveId(api, game));
 
             }
 
@@ -139,6 +138,11 @@ public class RobotWarsGame {
         System.out.println();
         String winner = GameController.getWinner(robots[0], robots[1], users[0], users[1]);
         GameView.printWinMessage(winner);
+    }
+
+    public static String getLastMoveId(DefaultApi api, Game game) throws ApiException {
+        List<Move> allMoves = api.apiGamesGameIdMoveGet(game.getId());
+        return allMoves.getLast().getId();
     }
 
 
