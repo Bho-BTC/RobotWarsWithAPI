@@ -116,6 +116,7 @@ public class GameController {
         mainRobot.setHasAttackedThisRound(false);
         List<io.swagger.client.model.Move> movesList;
         System.out.println("Postition: " + mainRobot.getX() + " / " + mainRobot.getY());
+        RobotView.printStats(mainRobot);
         while (mainRobot.getMovesLeft() > 0 && !GameValidationController.checkWin(robots)) {
             try {
                 movesList = api.apiGamesGameIdMoveMoveIdAfterGet(gameId, lastMoveId);
@@ -127,11 +128,12 @@ public class GameController {
                             checkPowerUp(mainRobot, powerUps);
                             mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
                             MapView.drawMap(map);
-                            System.out.println();
                             System.out.println("Postition: " + mainRobot.getX() + " / " + mainRobot.getY());
-                            lastMoveId = movesList.getLast().getId();
+                            RobotView.printStats(mainRobot);
+                            System.out.println();
                         }
                     }
+                    lastMoveId = movesList.getLast().getId();
                     movesList.clear();
                 }
                 Thread.sleep(3000);
