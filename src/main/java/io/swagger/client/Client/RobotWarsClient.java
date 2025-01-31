@@ -57,11 +57,11 @@ public class RobotWarsClient {
                     try {
                         String userId = (apiInstance.apiGamesGameIdJoinPost(joinGame, gameId).getPlayerId());
                         System.out.println(userId);
-                        while (game.getStatus() != Game.StatusEnum.STARTED) {
+                        do {
                             System.out.println(apiInstance.apiGamesGameIdGet(game.getId()).getStatus());
                             Thread.sleep(500);
                             game = apiInstance.apiGamesGameIdGet(game.getId());
-                        }
+                        }while (game.getStatus() != Game.StatusEnum.STARTED);
 
                         game = apiInstance.apiGamesGameIdGet(game.getId());
                         User[] users = UserService.createUsersForRobotWars(game, userId);

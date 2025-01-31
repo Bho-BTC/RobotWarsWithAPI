@@ -88,6 +88,7 @@ public class RobotWarsGame {
             j++;
         }
         //                  Roboter------------------------------------------------------------------------------
+        game = api.apiGamesGameIdGet(game.getId());
         List<Move> initialMoves = game.getMoves();
 
         List<io.swagger.client.RobotWarsClientSideThings.Move.Move> initialMovesUnpacked = GameController.unpackMoves(initialMoves, users);
