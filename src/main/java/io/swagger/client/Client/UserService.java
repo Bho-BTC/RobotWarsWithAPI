@@ -17,7 +17,7 @@ public class UserService {
         user1.setRobotId(playerRobots.get(0).getRobotId());
         user2.setUserId(playerRobots.get(1).getPlayerId());
         user2.setRobotId(playerRobots.get(1).getRobotId());
-        if(Objects.equals(user1.getUserId(), userId)){
+        if(user1.getUserId().equals(userId)){
             user1.setName("You");
             user2.setName("Enemy");
         }else{

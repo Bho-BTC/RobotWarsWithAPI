@@ -3,7 +3,7 @@ package io.swagger.client.RobotWarsClientSideThings.Maps;
 import java.util.Arrays;
 
 public class Map {
-
+    protected String id;
     protected char[] arrayVersion;
     protected int maxX;
     protected int maxTotal;
@@ -56,5 +56,13 @@ public class Map {
 
     public void setSpace1D(int x, char s) {
         arrayVersion[x] = s;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public char[] getArrayVersion() {
+        return arrayVersion;
     }
 }

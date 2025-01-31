@@ -126,7 +126,6 @@ public class RobotWarsGame {
 
             }else{
                 GameController.waitEnemyTurn(game.getId(), map, users, robots[TurnCount % robots.length], robots, powerUps, walls, api, getLastMoveId(api, game));
-
             }
 
             TurnCount++;

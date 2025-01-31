@@ -2,11 +2,12 @@ package io.swagger.client.Client;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.RobotWarsClientSideThings.Game.RobotWarsGame;
+import io.swagger.client.RobotWarsClientSideThings.Maps.Map;
+import io.swagger.client.RobotWarsClientSideThings.Maps.MapView;
 import io.swagger.client.RobotWarsClientSideThings.User.User;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class RobotWarsClient {
@@ -23,13 +24,15 @@ public class RobotWarsClient {
                 //Roboter erstellen
                 case 1:
                     io.swagger.client.model.NewRobot newRobot = RobotService.makeRobot(scanner);
-                    apiInstance.apiRobotsRobotPost(newRobot);
+                    Robot postedRobot = apiInstance.apiRobotsRobotPost(newRobot);
+                    System.out.println(postedRobot);
                     break;
 
                 //Map laden
                 case 2:
-                    System.out.println(MapService.getMapById(apiInstance, MapService.getFirstMapId(apiInstance)));
-
+                    Map map = MapService.chooseMap(scanner, apiInstance);
+                    System.out.println(map);
+                    MapView.drawMap(map);
                     break;
 
                 //Spiel erstellen
@@ -54,9 +57,9 @@ public class RobotWarsClient {
                     try {
                         String userId = (apiInstance.apiGamesGameIdJoinPost(joinGame, gameId).getPlayerId());
                         System.out.println(userId);
-                        while (game.getStatus() == Game.StatusEnum.INITIAL) {
+                        while (game.getStatus() != Game.StatusEnum.STARTED) {
                             System.out.println(apiInstance.apiGamesGameIdGet(game.getId()).getStatus());
-                            Thread.sleep(2000);
+                            Thread.sleep(500);
                             game = apiInstance.apiGamesGameIdGet(game.getId());
                         }
 
@@ -66,7 +69,7 @@ public class RobotWarsClient {
 
 
 
-                        RobotWarsGame RobotWars = new RobotWarsGame(game, MapService.getMapById(apiInstance, game.getMap()),robots, users, chosenRobot.getId(), userId, apiInstance);
+                        RobotWarsGame RobotWars = new RobotWarsGame(game, MapService.getGameMapById(apiInstance, game.getMap()),robots, users, chosenRobot.getId(), userId, apiInstance);
 
                         RobotWars.play();
 

@@ -98,8 +98,7 @@ public class GameController {
 
 
         try {
-            io.swagger.client.model.Move postedMove = api.apiGamesGameIdMovePlayerPlayerIdPost(apiNewMove, gameId, user.getUserId());
-            return postedMove;
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(apiNewMove, gameId, user.getUserId());
         } catch (ApiException e) {
             System.out.println(e.getResponseBody());
         }
@@ -124,9 +123,9 @@ public class GameController {
                     List<Move> unpackedMoves = unpackMoves(movesList, users);
                     for (Move move : unpackedMoves) {
                         if(!move.getMoveId().equals(lastMoveId)){
+                            mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
                             executeMove(move, mainRobot, robots, walls, map);
                             checkPowerUp(mainRobot, powerUps);
-                            mainRobot.setMovesLeft(mainRobot.getMovesLeft() - 1);
                             MapView.drawMap(map);
                             System.out.println("Postition: " + mainRobot.getX() + " / " + mainRobot.getY());
                             RobotView.printStats(mainRobot);
@@ -164,9 +163,14 @@ public class GameController {
 
     public static String getRobotIdFromPlayer(User[] users, String userId) {
         for (User user : users) {
+            System.out.println("user:" + user.getName());
+            System.out.println("userId:" + userId);
+            System.out.println("robot ID: " + user.getRobotId());
             if (user.getUserId().equals(userId)) {
+                System.out.println("user found");
                 return user.getRobotId();
             }
+            System.out.println("user not found");
         }
         return null;
     }

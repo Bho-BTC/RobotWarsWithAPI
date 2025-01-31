@@ -3,8 +3,7 @@ package io.swagger.client.Client;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapService {
     public static String getFirstMapId(DefaultApi apiInstance) throws ApiException {
@@ -18,9 +17,10 @@ public class MapService {
         return (String) mapData.get("id");
     }
 
-    public static io.swagger.client.RobotWarsClientSideThings.Maps.Map getMapById(DefaultApi apiInstance, String mapId) throws ApiException {
+    public static io.swagger.client.RobotWarsClientSideThings.Maps.Map getGameMapById(DefaultApi apiInstance, String mapId) throws ApiException {
         try {
             Map mapData = apiInstance.apiMapsMapIdGet(mapId);
+
 
             int mapSizeX = ((Double) mapData.get("mapSizeX")).intValue();
             int mapSize = ((Double) mapData.get("mapSize")).intValue();
@@ -46,6 +46,40 @@ public class MapService {
             }
             //MapView.drawMap(ingameMap);
             return ingameMap;
+        } catch (ApiException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
+
+
+    public static io.swagger.client.RobotWarsClientSideThings.Maps.Map chooseMap(Scanner scanner, DefaultApi apiInstance) throws ApiException {
+        try {
+            //Roboter Liste laden
+            List<Map> mapList = apiInstance.apiMapsGet();
+            List<String> idList = new ArrayList<>();
+            List<io.swagger.client.RobotWarsClientSideThings.Maps.Map> gameMapList = new ArrayList<>();
+            String input;
+            //Roboter Ids speichern
+            for (Map map : mapList) {
+                gameMapList.add(getGameMapById( apiInstance,map.get("id").toString()));
+                System.out.println(map.get("id"));
+                System.out.println("Map Size X: " +  map.get("mapSizeX"));
+                System.out.println("Map Size: " + map.get("mapSize"));
+                System.out.println("Array Version: " + Arrays.toString(gameMapList.getLast().getArrayVersion()));
+                System.out.println();
+                idList.add(map.get("id").toString());
+            }
+            //Id auswählen lassen
+            do {
+                System.out.println("Welche Map willst du haben?");
+                input = scanner.nextLine();
+            } while (!idList.contains(input));
+
+            return getGameMapById(apiInstance,input);
+
         } catch (ApiException e) {
             System.out.println(e.getMessage());
         }

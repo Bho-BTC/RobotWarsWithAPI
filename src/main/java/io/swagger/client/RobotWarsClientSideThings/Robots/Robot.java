@@ -2,6 +2,7 @@ package io.swagger.client.RobotWarsClientSideThings.Robots;
 
 public class Robot {
     private String robotID;
+    private String name;
     private int x;
     private int y;
     private int coords1D;
@@ -41,6 +42,7 @@ public class Robot {
         this.range = robotModel.getAttackRange().intValue();
         this.movement = robotModel.getMovementRate().intValue();
         this.movesLeft = robotModel.getMovementRate().intValue();
+        this.name =  robotModel.getName();
 
     }
 

@@ -48,7 +48,7 @@ public class GameValidationController {
             case "Q":
                 wouldBeX = turningRobot.getX() - 1;
                 wouldBeY = turningRobot.getY() - 1;
-                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 1 || wouldBeY < 1 || checkWall(wouldBeX, wouldBeY, walls)) {
+                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 0 || wouldBeY < 0 || checkWall(wouldBeX, wouldBeY, walls)) {
                     return false;
                 }
                 break;
@@ -56,7 +56,7 @@ public class GameValidationController {
             case "W":
                 wouldBeX = turningRobot.getX();
                 wouldBeY = turningRobot.getY() - 1;
-                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeY < 1 || checkWall(wouldBeX, wouldBeY, walls)) {
+                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeY < 0 || checkWall(wouldBeX, wouldBeY, walls)) {
                     return false;
                 }
                 break;
@@ -64,7 +64,7 @@ public class GameValidationController {
             case "E":
                 wouldBeX = turningRobot.getX() + 1;
                 wouldBeY = turningRobot.getY() - 1;
-                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX > map.getMaxX() || wouldBeY < (map.getMaxTotal()/map.getMaxX()) || checkWall(wouldBeX, wouldBeY, walls)) {
+                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX > map.getMaxX() || wouldBeY < 0 || checkWall(wouldBeX, wouldBeY, walls)) {
                     return false;
                 }
                 break;
@@ -72,7 +72,7 @@ public class GameValidationController {
             case "A":
                 wouldBeX = turningRobot.getX() - 1;
                 wouldBeY = turningRobot.getY();
-                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 1 || checkWall(wouldBeX, wouldBeY, walls)) {
+                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 0 || checkWall(wouldBeX, wouldBeY, walls)) {
                     return false;
                 }
                 break;
@@ -88,7 +88,7 @@ public class GameValidationController {
             case "Y":
                 wouldBeX = turningRobot.getX() - 1;
                 wouldBeY = turningRobot.getY() + 1;
-                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 1 || wouldBeY > (map.getMaxTotal()/map.getMaxX()) || checkWall(wouldBeX, wouldBeY, walls)) {
+                if (checkCordsForRobot(wouldBeX, wouldBeY, robots) || wouldBeX < 0 || wouldBeY > (map.getMaxTotal()/map.getMaxX()) || checkWall(wouldBeX, wouldBeY, walls)) {
                     return false;
                 }
                 break;
