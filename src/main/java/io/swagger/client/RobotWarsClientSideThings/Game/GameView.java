@@ -71,6 +71,7 @@ public class GameView {
         System.out.println("   |  |       |  |");
         System.out.println("   |__|       |__|");
         System.out.println(username + "      " + username2);
+        System.out.println();
     }
 
 

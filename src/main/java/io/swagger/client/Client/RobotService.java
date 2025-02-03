@@ -11,12 +11,20 @@ import java.util.Scanner;
 
 public class RobotService {
 
-    public static io.swagger.client.RobotWarsClientSideThings.Robots.Robot[] createRobotsForRobotWars(DefaultApi apiInstance, User[] users) throws ApiException {
+    public static io.swagger.client.RobotWarsClientSideThings.Robots.Robot[] createRobotsForRobotWars(DefaultApi apiInstance, User[] users, String robotId) throws ApiException {
         Robot robot1Model = apiInstance.apiRobotsRobotIdGet(users[0].getRobotId());
         io.swagger.client.RobotWarsClientSideThings.Robots.Robot robot1 = new io.swagger.client.RobotWarsClientSideThings.Robots.Robot(robot1Model, '1');
 
         Robot robot2Model = apiInstance.apiRobotsRobotIdGet(users[1].getRobotId());
         io.swagger.client.RobotWarsClientSideThings.Robots.Robot robot2 = new io.swagger.client.RobotWarsClientSideThings.Robots.Robot(robot2Model, '2');
+
+        if (robot1.getRobotId().equals(robotId)){
+            robot1.setAvatar('Y');
+            robot2.setAvatar('E');
+        }else{
+            robot1.setAvatar('E');
+            robot2.setAvatar('Y');
+        }
 
         return new io.swagger.client.RobotWarsClientSideThings.Robots.Robot[]{robot1, robot2};
     }

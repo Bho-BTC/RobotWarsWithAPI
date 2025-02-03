@@ -65,7 +65,7 @@ public class RobotWarsClient {
 
                         game = apiInstance.apiGamesGameIdGet(game.getId());
                         User[] users = UserService.createUsersForRobotWars(game, userId);
-                        io.swagger.client.RobotWarsClientSideThings.Robots.Robot[] robots = RobotService.createRobotsForRobotWars(apiInstance, users);
+                        io.swagger.client.RobotWarsClientSideThings.Robots.Robot[] robots = RobotService.createRobotsForRobotWars(apiInstance, users, joinGame.getRobotId());
 
 
 

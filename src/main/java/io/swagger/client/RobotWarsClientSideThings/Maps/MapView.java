@@ -20,8 +20,7 @@ public class MapView {
                 System.out.println(); // Neue Zeile am Ende der Reihe
             }
         }
-        System.out.println(map.arrayVersion);
-        System.out.println(map.arrayVersion.length);
+        System.out.println();
 
 //        while (countY < map.maxY) {
 //            System.out.println();

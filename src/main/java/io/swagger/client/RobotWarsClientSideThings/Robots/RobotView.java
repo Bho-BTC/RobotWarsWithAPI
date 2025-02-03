@@ -45,6 +45,28 @@ public class RobotView {
     }
 
 
+    public static String fillStringTo16(String string) {
+        StringBuilder stringBuilder = new StringBuilder(string);
+        while (stringBuilder.length() < 16) {
+            stringBuilder.append(" ");
+        }
+        string = stringBuilder.toString();
+        return string;
+    }
+
+
+    public static void printStats2Robots(Robot turningRobot, Robot notTurningRobot) {
+        System.out.println("\t\tYOUR STATS ");
+        System.out.println("Robot:   \t" + fillStringTo16(turningRobot.getAvatar()+"") + notTurningRobot.getAvatar());
+        System.out.println("HEALTH:  \t" + fillStringTo16(turningRobot.getMaxLifePoints() + "/" + turningRobot.getCurrentHp()) + notTurningRobot.getMaxLifePoints() + "/" + notTurningRobot.getCurrentHp());
+        System.out.println("DAMAGE:  \t" + fillStringTo16(turningRobot.getDmg() + "") + notTurningRobot.getDmg());
+        System.out.println("RANGE:   \t" + fillStringTo16(turningRobot.getRange() + "") + notTurningRobot.getRange());
+        System.out.println("MOVEMENT:\t" + fillStringTo16(turningRobot.getMovement() + "/" + turningRobot.getMovesLeft()) + notTurningRobot.getMovement() + "/" + notTurningRobot.getMovesLeft());
+        System.out.println();
+
+    }
+
+
     public static void printStats(Robot robot) {
         System.out.println("Stats von " + robot.getAvatar());
         System.out.println("HP: " + robot.getCurrentHp() + "/" + robot.getMaxLifePoints());

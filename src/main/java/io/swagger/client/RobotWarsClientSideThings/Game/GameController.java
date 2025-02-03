@@ -46,12 +46,23 @@ public class GameController {
         }
     }
 
+
+
+    public static Robot notTurningRobot (Robot turningRobot, Robot[] robots){
+        for (Robot robot: robots){
+            if (robot != turningRobot){
+                return robot;
+            }
+        }
+        return null;
+    }
+
+
     public static io.swagger.client.model.Move makeMove(String gameId, Robot turningRobot, Robot[] robots, User user, Map map, PowerUp[] powerUps, Walls[] walls, DefaultApi api) throws ApiException {
         Move newMove = new Move();
         newMove.setRobotID(turningRobot.getRobotId());
 
-
-        RobotView.printStats(turningRobot);
+        RobotView.printStats2Robots(turningRobot, notTurningRobot(turningRobot, robots));
         MovementType actionType = GameView.getActionType(user.getName(), turningRobot, robots, walls, map);
         newMove.setMoveType(actionType);
 
@@ -79,16 +90,16 @@ public class GameController {
         }
 
         executeMove(newMove, turningRobot, robots, walls, map);
-        System.out.println("Robot ID: " + newMove.getRobotID());
-        System.out.println("Movement Type: " + newMove.getMoveType());
-        System.out.println("Alignment: " + newMove.getAlignment());
-        System.out.println("Map Index: " + newMove.getMapIndex());
+//        System.out.println("Robot ID: " + newMove.getRobotID());
+//        System.out.println("Movement Type: " + newMove.getMoveType());
+//        System.out.println("Alignment: " + newMove.getAlignment());
+//        System.out.println("Map Index: " + newMove.getMapIndex());
 
         NewMove apiNewMove = formatMoveToApiNewMove(newMove, user);
-        System.out.println("Player ID: " + apiNewMove.getPlayerId());
-        System.out.println("Movement Type: " + apiNewMove.getMovementType());
-        System.out.println("Alignment: " + apiNewMove.getAlign());
-        System.out.println("Map Index: " + apiNewMove.getMapIndex());
+//        System.out.println("Player ID: " + apiNewMove.getPlayerId());
+//        System.out.println("Movement Type: " + apiNewMove.getMovementType());
+//        System.out.println("Alignment: " + apiNewMove.getAlign());
+//        System.out.println("Map Index: " + apiNewMove.getMapIndex());
 
 
         checkPowerUp(turningRobot, powerUps);
@@ -163,14 +174,14 @@ public class GameController {
 
     public static String getRobotIdFromPlayer(User[] users, String userId) {
         for (User user : users) {
-            System.out.println("user:" + user.getName());
-            System.out.println("userId:" + userId);
-            System.out.println("robot ID: " + user.getRobotId());
+//            System.out.println("user:" + user.getName());
+//            System.out.println("userId:" + userId);
+//            System.out.println("robot ID: " + user.getRobotId());
             if (user.getUserId().equals(userId)) {
-                System.out.println("user found");
+//                System.out.println("user found");
                 return user.getRobotId();
             }
-            System.out.println("user not found");
+//            System.out.println("user not found");
         }
         return null;
     }
